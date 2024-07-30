@@ -15,10 +15,12 @@ public class View {
 
     public void startUI() {
         while (keepRunning) {
-            System.out.println(printMessage1());
+            System.out.print(printMessage1());
             String input = scanner.nextLine().trim();
-            while (coordinator.runValidation1(input)) {
-                System.out.println(printMessage1());
+            while (!coordinator.runValidation1(input)) {
+                System.out.println(printInvalid1());
+                System.out.print(printMessage1());
+                input = scanner.nextLine().trim();
             }
             if (input.equals("1")){
 
@@ -28,10 +30,17 @@ public class View {
         }
     }
 
-    private StringBuilder printMessage1 () {
+    private StringBuilder printMessage1() {
         StringBuilder temp = new StringBuilder();
         temp.append("This is a strategic dice game!\n");
         temp.append("Play game (1) or Exit game (0) >");
+        return temp;
+    }
+
+    private StringBuilder printInvalid1() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Invalid input!\n");
+        temp.append("Choose (1) or (0)!\n");
         return temp;
     }
 }

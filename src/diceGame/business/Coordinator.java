@@ -17,8 +17,7 @@ public class Coordinator {
     }
 
     public boolean runValidation1(String input) {
-        boolean temp = validator.validation1(input);
-        return temp;
+        return validator.validation1(input);
     }
 
 
