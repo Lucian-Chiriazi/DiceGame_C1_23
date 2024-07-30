@@ -13,6 +13,7 @@ public class Coordinator {
     private int currentPlayer;
     private int round;
     private ArrayList<Integer> currentThrow;
+    private ArrayList<Integer> currentDiceKept;
 
     public Coordinator() {
         this.dao = new DAOImplementation();
@@ -44,12 +45,24 @@ public class Coordinator {
             input = scanner.nextLine().trim();
         }
         this.currentThrow = generateThrow(players.get(currentPlayer));
+
         System.out.print("Throw:  ");
         System.out.print(printThrow(currentThrow));
         System.out.println();
         System.out.print("Sorted: ");
         sortThrow(currentThrow);
         System.out.print(printThrow(currentThrow));
+
+        System.out.println();
+        System.out.print(printMessage3());
+        String input2 = scanner.nextLine().trim();
+
+        while (!validator.validation3(input2, currentThrow, currentDiceKept)) {
+            System.out.println(printInvalid1());
+            System.out.println(printMessage4());
+            System.out.print(printMessage3());
+            input2 = scanner.nextLine().trim();
+        }
 
 
     }
@@ -93,13 +106,25 @@ public class Coordinator {
         return temp;
     }
 
-    public StringBuilder printMessage2() {
+    private StringBuilder printMessage2() {
         StringBuilder temp = new StringBuilder();
         temp.append("Enter 't' to throw > ");
         return temp;
     }
 
-    public StringBuilder printInvalid1() {
+    private StringBuilder printMessage3() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Select die value to set aside > ");
+        return temp;
+    }
+
+    private StringBuilder printMessage4() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("You already chose that category or current throw dose not contain that value!");
+        return temp;
+    }
+
+    private StringBuilder printInvalid1() {
         StringBuilder temp = new StringBuilder();
         temp.append("Invalid input!");
         return temp;
