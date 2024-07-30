@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class View {
     private Coordinator coordinator;
     private Scanner scanner;
+    private boolean keepRunning = true;
 
     public View (Coordinator coordinator) {
         this.coordinator = coordinator;
@@ -13,6 +14,24 @@ public class View {
     }
 
     public void startUI() {
+        while (keepRunning) {
+            System.out.println(printMessage1());
+            String input = scanner.nextLine().trim();
+            while (coordinator.runValidation1(input)) {
+                System.out.println(printMessage1());
+            }
+            if (input.equals("1")){
 
+            }else {
+                keepRunning = false;
+            }
+        }
+    }
+
+    private StringBuilder printMessage1 () {
+        StringBuilder temp = new StringBuilder();
+        temp.append("This is a strategic dice game!\n");
+        temp.append("Play game (1) or Exit game (0) >");
+        return temp;
     }
 }

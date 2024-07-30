@@ -1,8 +1,9 @@
 package diceGame.data;
 
 import diceGame.business.Player;
-import java.util.ArrayList;
+
+import java.util.List;
 
 public interface DAO {
-    ArrayList<Player> getPlayers();
+    List<Player> getPlayers();
 }
