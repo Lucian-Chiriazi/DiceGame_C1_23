@@ -23,6 +23,7 @@ public class Coordinator {
         this.currentPlayer = 0;
         this.round = 0;
         this.currentThrow = new ArrayList<>();
+        this.currentDiceKept = new ArrayList<>();
     }
 
     public void startGame () {
@@ -44,6 +45,7 @@ public class Coordinator {
             System.out.println(printMessage2());
             input = scanner.nextLine().trim();
         }
+
         this.currentThrow = generateThrow(players.get(currentPlayer));
 
         System.out.print("Throw:  ");
@@ -65,9 +67,10 @@ public class Coordinator {
         }
 
 
+
     }
 
-    public ArrayList<Integer> generateThrow(Player player) {
+    private ArrayList<Integer> generateThrow(Player player) {
         ArrayList<Integer> temp = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i < player.getDiceLeft(); i++) {
@@ -76,11 +79,21 @@ public class Coordinator {
         return temp;
     }
 
-    public void sortThrow(ArrayList<Integer> temp) {
-        Collections.sort(temp, Collections.reverseOrder());
+    private int countOccurrences(String input, ArrayList<Integer> currentThrow) {
+        int temp = 0;
+        for (int i = 0; i < currentThrow.size(); i++) {
+            if (Integer.parseInt(input) == currentThrow.get(i)) {
+                temp++;
+            }
+        }
+        return temp;
     }
 
-    public StringBuilder printThrow(ArrayList<Integer> temp) {
+    private void sortThrow(ArrayList<Integer> temp) {
+        temp.sort(Collections.reverseOrder());
+    }
+
+    private StringBuilder printThrow(ArrayList<Integer> temp) {
         StringBuilder diceList = new StringBuilder();
         for (int i = 0; i < temp.size(); i++) {
             diceList.append("[ ");
@@ -94,11 +107,11 @@ public class Coordinator {
         return validator.validation1(input);
     }
 
-    public String getPlayerName(int id) {
-        return players.get(id).getPlayerName();
+    private String getPlayerName(int currentPlayer) {
+        return players.get(currentPlayer).getPlayerName();
     }
 
-    public StringBuilder printMessage1(Player player) {
+    private StringBuilder printMessage1(Player player) {
         StringBuilder temp = new StringBuilder();
         temp.append("First throw of this turn, starting with ");
         temp.append(player.getDiceLeft());
