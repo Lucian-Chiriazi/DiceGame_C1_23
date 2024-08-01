@@ -18,7 +18,7 @@ public class Validation {
     }
 
     public boolean validation3 (String input, ArrayList<Integer> currentThrow, ArrayList<Integer> currentDiceKept) {
-        String regex = "^[16]$";
+        String regex = "^[123456]$";
         Pattern pattern = Pattern.compile(regex);
         if (pattern.matcher(input).matches()) {
             if (validation4(input, currentThrow)) {

@@ -66,7 +66,8 @@ public class Coordinator {
             input2 = scanner.nextLine().trim();
         }
 
-
+        int occurrences = countOccurrences(input2, currentThrow);
+        System.out.println(printMessage5(input2, occurrences));
 
     }
 
@@ -137,10 +138,30 @@ public class Coordinator {
         return temp;
     }
 
+    private StringBuilder printMessage5(String input, int occurrences) {
+        StringBuilder temp = new StringBuilder();
+        temp.append("There are ");
+        temp.append(occurrences);
+        temp.append(" dice that have that value.\n");
+        temp.append("You can choose to keep ");
+        for (int i = 1; i <= occurrences; i++) {
+            if (i == occurrences) {
+                temp.append("or ");
+                temp.append(i);
+                temp.append(" ");
+            }else {
+                temp.append(i);
+                temp.append(" ");
+            }
+        }
+        temp.append("dice of value ");
+        temp.append(input);
+        return temp;
+    }
+
     private StringBuilder printInvalid1() {
         StringBuilder temp = new StringBuilder();
         temp.append("Invalid input!");
         return temp;
     }
-
 }
