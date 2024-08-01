@@ -69,6 +69,18 @@ public class Coordinator {
         int occurrences = countOccurrences(input2, currentThrow);
         System.out.println(printMessage5(input2, occurrences));
 
+        System.out.print(printMessage6());
+        String input3 = scanner.nextLine().trim();
+
+        while(!validator.validation5(input3, occurrences)) {
+            System.out.println(printInvalid1());
+            System.out.print(printMessage6());
+            input3 = scanner.nextLine().trim();
+        }
+
+
+
+
     }
 
     private ArrayList<Integer> generateThrow(Player player) {
@@ -145,7 +157,7 @@ public class Coordinator {
         temp.append(" dice that have that value.\n");
         temp.append("You can choose to keep ");
         for (int i = 1; i <= occurrences; i++) {
-            if (i == occurrences) {
+            if (i == occurrences && occurrences != 1) {
                 temp.append("or ");
                 temp.append(i);
                 temp.append(" ");
@@ -156,6 +168,13 @@ public class Coordinator {
         }
         temp.append("dice of value ");
         temp.append(input);
+        temp.append(".");
+        return temp;
+    }
+
+    private StringBuilder printMessage6() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("How many do you want to set aside > ");
         return temp;
     }
 
