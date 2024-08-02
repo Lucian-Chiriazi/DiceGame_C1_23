@@ -83,6 +83,10 @@ public class Coordinator {
         updateCurrentScore(input2, input3);
         System.out.println(printMessage7());
 
+        players.get(currentPlayer).setDiceLeft(Integer.parseInt(input3));
+        System.out.println(printMessage8(input3));
+
+        
     }
 
     private void updateCurrentScore(String choice, String multiplier) {
@@ -189,6 +193,14 @@ public class Coordinator {
         temp.append("Score so far = ");
         temp.append(currentScore);
 
+        return temp;
+    }
+
+    private StringBuilder printMessage8(String input) {
+        StringBuilder temp = new StringBuilder();
+        temp.append("You have kept ");
+        temp.append(input);
+        temp.append(" dice so far.");
         return temp;
     }
 
