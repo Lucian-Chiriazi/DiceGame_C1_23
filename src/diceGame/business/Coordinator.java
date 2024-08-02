@@ -12,6 +12,7 @@ public class Coordinator {
     private List<Player> players;
     private int currentPlayer;
     private int round;
+    private int currentScore;
     private ArrayList<Integer> currentThrow;
     private ArrayList<Integer> currentDiceKept;
 
@@ -20,6 +21,7 @@ public class Coordinator {
         this.scanner = new Scanner(System.in);
         this.players = dao.getPlayers();
         this.validator = new Validation();
+        this.currentScore = 0;
         this.currentPlayer = 0;
         this.round = 0;
         this.currentThrow = new ArrayList<>();
@@ -34,7 +36,6 @@ public class Coordinator {
     }
 
     public void startRound() {
-        System.out.println(printScoreboard());
         System.out.println();
         System.out.println(getPlayerName(currentPlayer));
         System.out.println(printMessage1(players.get(currentPlayer)));
@@ -79,9 +80,13 @@ public class Coordinator {
             input3 = scanner.nextLine().trim();
         }
 
+        updateCurrentScore(input2, input3);
+        System.out.println(printMessage7());
 
+    }
 
-
+    private void updateCurrentScore(String choice, String multiplier) {
+        this.currentScore += Integer.parseInt(multiplier) * Integer.parseInt(choice);
     }
 
     private ArrayList<Integer> generateThrow(Player player) {
@@ -176,6 +181,14 @@ public class Coordinator {
     private StringBuilder printMessage6() {
         StringBuilder temp = new StringBuilder();
         temp.append("How many do you want to set aside > ");
+        return temp;
+    }
+
+    private StringBuilder printMessage7() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Score so far = ");
+        temp.append(currentScore);
+
         return temp;
     }
 
