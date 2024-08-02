@@ -50,4 +50,10 @@ public class Validation {
         }
         return false;
     }
+
+    public boolean validation6(String input){
+        String regex = "^[fc]$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(input).matches();
+    }
 }

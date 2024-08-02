@@ -35,7 +35,11 @@ public class Coordinator {
         }
     }
 
-    public void startRound() {
+    private void startRound() {
+        playTurn();
+    }
+
+    private void playTurn() {
         System.out.println();
         System.out.println(getPlayerName(currentPlayer));
         System.out.println(printMessage1(players.get(currentPlayer)));
@@ -86,7 +90,15 @@ public class Coordinator {
         players.get(currentPlayer).setDiceLeft(Integer.parseInt(input3));
         System.out.println(printMessage8(input3));
 
-        
+        System.out.print(printMessage9());
+        String input4 = scanner.nextLine().trim();
+
+        while(!validator.validation6(input4)) {
+            System.out.println(printInvalid1());
+            System.out.print(printMessage9());
+            input4 = scanner.nextLine().trim();
+        }
+
     }
 
     private void updateCurrentScore(String choice, String multiplier) {
@@ -201,6 +213,13 @@ public class Coordinator {
         temp.append("You have kept ");
         temp.append(input);
         temp.append(" dice so far.");
+        return temp;
+    }
+
+    private StringBuilder printMessage9() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Finish turn or continue (enter 'f' to finish turn or 'c' to continue and throw again) > ");
+
         return temp;
     }
 
