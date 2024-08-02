@@ -99,6 +99,20 @@ public class Coordinator {
             input4 = scanner.nextLine().trim();
         }
 
+        if (input4.equals("c")) {
+            continueTurn();
+        }else {
+            finishTurn();
+        }
+
+    }
+
+    private void continueTurn() {
+        System.out.println(printMessage10());
+    }
+
+    private void finishTurn() {
+
     }
 
     private void updateCurrentScore(String choice, String multiplier) {
@@ -219,6 +233,29 @@ public class Coordinator {
     private StringBuilder printMessage9() {
         StringBuilder temp = new StringBuilder();
         temp.append("Finish turn or continue (enter 'f' to finish turn or 'c' to continue and throw again) > ");
+
+        return temp;
+    }
+
+    private StringBuilder printMessage10() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Taking ");
+        temp.append(players.get(currentPlayer).getDiceLeft());
+        temp.append(" dice forward to the next throw.");
+
+        return temp;
+    }
+
+    private StringBuilder printMessage11() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Next throw of this turn.");
+
+        return temp;
+    }
+
+    private StringBuilder printMessage12() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Enter 't' to throw > ");
 
         return temp;
     }
