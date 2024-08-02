@@ -27,4 +27,20 @@ public class Player {
     public void setDiceLeft(int choice) {
         this.diceLeft -= choice;
     }
+
+    public String getPlayerScores(int index) {
+        return playerScores[index];
+    }
+
+    public int getTotalScore(){
+        int temp = 0;
+        for (String value : playerScores) {
+            if (value != null) {
+                temp += Integer.parseInt(value);
+            }else {
+                temp += 0;
+            }
+        }
+        return temp;
+    }
 }

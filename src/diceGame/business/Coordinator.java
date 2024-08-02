@@ -34,6 +34,7 @@ public class Coordinator {
     }
 
     public void startRound() {
+        System.out.println(printScoreboard());
         System.out.println();
         System.out.println(getPlayerName(currentPlayer));
         System.out.println(printMessage1(players.get(currentPlayer)));
@@ -175,6 +176,47 @@ public class Coordinator {
     private StringBuilder printMessage6() {
         StringBuilder temp = new StringBuilder();
         temp.append("How many do you want to set aside > ");
+        return temp;
+    }
+
+    private StringBuilder printScoreboard() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("--------------------------------------------\n");
+        temp.append(String.format("|  %5s  | %8s | %8s | %8s |\n",
+                "Round",
+                players.get(0).getPlayerName(),
+                players.get(1).getPlayerName(),
+                players.get(2).getPlayerName()));
+        temp.append("--------------------------------------------\n");
+        temp.append(String.format("|    %1s    |    %-2s    |    %-2s    |    %-2s    |\n",
+                "1",
+                (players.get(0).getPlayerScores(0) == null) ? "--" : players.get(0).getPlayerScores(0),
+                (players.get(1).getPlayerScores(0) == null) ? "--" : players.get(1).getPlayerScores(0),
+                (players.get(2).getPlayerScores(0) == null) ? "--" : players.get(2).getPlayerScores(0)
+                ));
+        temp.append("--------------------------------------------\n");
+        temp.append(String.format("|    %1s    |    %-2s    |    %-2s    |    %-2s    |\n",
+                "2",
+                (players.get(0).getPlayerScores(1) == null) ? "--" : players.get(0).getPlayerScores(1),
+                (players.get(1).getPlayerScores(1) == null) ? "--" : players.get(1).getPlayerScores(1),
+                (players.get(2).getPlayerScores(1) == null) ? "--" : players.get(2).getPlayerScores(1)
+        ));
+        temp.append("--------------------------------------------\n");
+        temp.append(String.format("|    %1s    |    %-2s    |    %-2s    |    %-2s    |\n",
+                "3",
+                (players.get(0).getPlayerScores(2) == null) ? "--" : players.get(0).getPlayerScores(2),
+                (players.get(1).getPlayerScores(2) == null) ? "--" : players.get(1).getPlayerScores(2),
+                (players.get(2).getPlayerScores(2) == null) ? "--" : players.get(2).getPlayerScores(2)
+        ));
+        temp.append("--------------------------------------------\n");
+        temp.append(String.format("|  %5s  |    %-2s    |    %-2s    |    %-2s    |\n",
+                "Total",
+                players.get(0).getTotalScore(),
+                players.get(1).getTotalScore(),
+                players.get(2).getTotalScore()
+                ));
+        temp.append("--------------------------------------------\n");
+
         return temp;
     }
 
