@@ -56,4 +56,10 @@ public class Validation {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input).matches();
     }
+
+    public boolean validation7(String input){
+        String regex = "^t$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(input).matches();
+    }
 }

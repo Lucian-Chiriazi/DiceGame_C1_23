@@ -52,14 +52,7 @@ public class Coordinator {
             input = scanner.nextLine().trim();
         }
 
-        this.currentThrow = generateThrow(players.get(currentPlayer));
-
-        System.out.print("Throw:  ");
-        System.out.print(printThrow(currentThrow));
-        System.out.println();
-        System.out.print("Sorted: ");
-        sortThrow(currentThrow);
-        System.out.print(printThrow(currentThrow));
+        generateAndPrintThrow();
 
         System.out.println();
         System.out.print(printMessage3());
@@ -109,10 +102,34 @@ public class Coordinator {
 
     private void continueTurn() {
         System.out.println(printMessage10());
+        System.out.println(printMessage11());
+        System.out.print(printMessage12());
+        String input = scanner.nextLine().trim();
+
+        while (!validator.validation7(input)) {
+            System.out.println(printInvalid1());
+            System.out.print(printMessage12());
+            input = scanner.nextLine().trim();
+        }
+
+
+        generateAndPrintThrow();
+
     }
 
     private void finishTurn() {
 
+    }
+
+    private void generateAndPrintThrow() {
+        this.currentThrow = generateThrow(players.get(currentPlayer));
+
+        System.out.print("Throw:  ");
+        System.out.print(printThrow(currentThrow));
+        System.out.println();
+        System.out.print("Sorted: ");
+        sortThrow(currentThrow);
+        System.out.print(printThrow(currentThrow));
     }
 
     private void updateCurrentScore(String choice, String multiplier) {
