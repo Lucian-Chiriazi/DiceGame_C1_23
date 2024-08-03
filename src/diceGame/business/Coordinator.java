@@ -29,14 +29,19 @@ public class Coordinator {
     }
 
     public void startGame () {
-        while (round <= 3) {
+        while (round < 3) {
             startRound();
+            printScoreboard();
+            resetVariables();
             round++;
         }
     }
 
     private void startRound() {
-        playTurn();
+        for (int i = 0; i < 3; i++) {
+            playTurn();
+            currentPlayer++;
+        }
     }
 
     private void playTurn() {
@@ -112,8 +117,9 @@ public class Coordinator {
             input = scanner.nextLine().trim();
         }
 
-
         generateAndPrintThrow();
+
+
 
     }
 
@@ -175,6 +181,13 @@ public class Coordinator {
 
     private String getPlayerName(int currentPlayer) {
         return players.get(currentPlayer).getPlayerName();
+    }
+
+    private void resetVariables() {
+        this.currentPlayer = 0;
+        this.currentScore = 0;
+        this.currentThrow = new ArrayList<>();
+        this.currentDiceKept = new ArrayList<>();
     }
 
     private StringBuilder printMessage1(Player player) {
