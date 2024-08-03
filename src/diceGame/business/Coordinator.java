@@ -15,6 +15,7 @@ public class Coordinator {
     private int currentScore;
     private ArrayList<Integer> currentThrow;
     private ArrayList<Integer> currentDiceKept;
+    private Set<Integer> currentValidOptions;
 
     public Coordinator() {
         this.dao = new DAOImplementation();
@@ -26,6 +27,7 @@ public class Coordinator {
         this.round = 0;
         this.currentThrow = new ArrayList<>();
         this.currentDiceKept = new ArrayList<>();
+        this.currentValidOptions = new HashSet<>();
     }
 
     public void startGame () {
@@ -69,6 +71,8 @@ public class Coordinator {
             System.out.print(printMessage3());
             input2 = scanner.nextLine().trim();
         }
+
+        updateDiceKept(input2);
 
         int occurrences = countOccurrences(input2, currentThrow);
         System.out.println(printMessage5(input2, occurrences));
@@ -119,13 +123,31 @@ public class Coordinator {
 
         generateAndPrintThrow();
 
+        System.out.println();
         System.out.println(printCurrentDiceKept());
-        System.out.println(printMessage13());   
+        System.out.println(printMessage13());
+
+        updateValidOptions();
+        System.out.println(printCurrentValidOptions());
 
     }
 
     private void finishTurn() {
 
+    }
+
+    private void updateValidOptions() {
+        for (Integer choice : currentDiceKept) {
+            for (Integer value : currentThrow) {
+                if (!value.equals(choice)) {
+                    currentValidOptions.add(value);
+                }
+            }
+        }
+    }
+
+    private void updateDiceKept(String input) {
+        currentDiceKept.add(Integer.parseInt(input));
     }
 
     private void generateAndPrintThrow() {
@@ -197,6 +219,18 @@ public class Coordinator {
         for (int i = 0; i < currentDiceKept.size(); i++) {
             temp.append("[ ");
             temp.append(currentDiceKept.get(i));
+            temp.append(" ] ");
+        }
+
+        return temp;
+    }
+
+    private StringBuilder printCurrentValidOptions() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("You can now select one of the following: ");
+        for (Integer value : currentValidOptions) {
+            temp.append("[ ");
+            temp.append(value);
             temp.append(" ] ");
         }
 
