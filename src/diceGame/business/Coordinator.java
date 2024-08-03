@@ -119,7 +119,8 @@ public class Coordinator {
 
         generateAndPrintThrow();
 
-
+        System.out.println(printCurrentDiceKept());
+        System.out.println(printMessage13());   
 
     }
 
@@ -188,6 +189,18 @@ public class Coordinator {
         this.currentScore = 0;
         this.currentThrow = new ArrayList<>();
         this.currentDiceKept = new ArrayList<>();
+    }
+
+    private StringBuilder printCurrentDiceKept() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("You have already set aside: ");
+        for (int i = 0; i < currentDiceKept.size(); i++) {
+            temp.append("[ ");
+            temp.append(currentDiceKept.get(i));
+            temp.append(" ] ");
+        }
+
+        return temp;
     }
 
     private StringBuilder printMessage1(Player player) {
@@ -286,6 +299,13 @@ public class Coordinator {
     private StringBuilder printMessage12() {
         StringBuilder temp = new StringBuilder();
         temp.append("Enter 't' to throw > ");
+
+        return temp;
+    }
+
+    private StringBuilder printMessage13() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("You must now select a different die value.");
 
         return temp;
     }
