@@ -15,7 +15,6 @@ public class Coordinator {
     private int currentScore;
     private ArrayList<Integer> currentThrow;
     private ArrayList<Integer> currentDiceKept;
-    private Set<Integer> currentValidOptions;
 
     public Coordinator() {
         this.dao = new DAOImplementation();
@@ -27,13 +26,12 @@ public class Coordinator {
         this.round = 0;
         this.currentThrow = new ArrayList<>();
         this.currentDiceKept = new ArrayList<>();
-        this.currentValidOptions = new HashSet<>();
     }
 
     public void startGame () {
         while (round < 3) {
             startRound();
-            printScoreboard();
+            System.out.println(printScoreboard());
             resetVariables();
             round++;
         }
@@ -74,38 +72,7 @@ public class Coordinator {
 
         updateDiceKept(input2);
 
-        int occurrences = countOccurrences(input2, currentThrow);
-        System.out.println(printMessage5(input2, occurrences));
-
-        System.out.print(printMessage6());
-        String input3 = scanner.nextLine().trim();
-
-        while(!validator.validation5(input3, occurrences)) {
-            System.out.println(printInvalid1());
-            System.out.print(printMessage6());
-            input3 = scanner.nextLine().trim();
-        }
-
-        updateCurrentScore(input2, input3);
-        System.out.println(printMessage7());
-
-        players.get(currentPlayer).setDiceLeft(Integer.parseInt(input3));
-        System.out.println(printMessage8(input3));
-
-        System.out.print(printMessage9());
-        String input4 = scanner.nextLine().trim();
-
-        while(!validator.validation6(input4)) {
-            System.out.println(printInvalid1());
-            System.out.print(printMessage9());
-            input4 = scanner.nextLine().trim();
-        }
-
-        if (input4.equals("c")) {
-            continueTurn();
-        }else {
-            finishTurn();
-        }
+        processChoice(input2);
 
     }
 
@@ -127,24 +94,63 @@ public class Coordinator {
         System.out.println(printCurrentDiceKept());
         System.out.println(printMessage13());
 
-        updateValidOptions();
         System.out.println(printCurrentValidOptions());
+        System.out.print(printMessage3());
+        String input2 = scanner.nextLine().trim();
 
+        while(!validator.validation3(input2, currentThrow, currentDiceKept)) {
+            System.out.println(printInvalid1());
+            System.out.print(printMessage3());
+            input2 = scanner.nextLine().trim();
+        }
+
+        updateDiceKept(input2);
+
+        processChoice(input2);
+
+
+    }
+
+
+    private void processChoice(String input) {
+        int occurrences = countOccurrences(input, currentThrow);
+        System.out.println(printMessage5(input, occurrences));
+
+        System.out.print(printMessage6());
+        String input3 = scanner.nextLine().trim();
+
+        while(!validator.validation5(input3, occurrences)) {
+            System.out.println(printInvalid1());
+            System.out.print(printMessage6());
+            input3 = scanner.nextLine().trim();
+        }
+
+        updateCurrentScore(input, input3);
+        System.out.println(printMessage7());
+
+        players.get(currentPlayer).setDiceLeft(Integer.parseInt(input3));
+        System.out.println(printMessage8(input3, players.get(currentPlayer)));
+
+        System.out.print(printMessage9());
+        String input4 = scanner.nextLine().trim();
+
+        while(!validator.validation6(input4)) {
+            System.out.println(printInvalid1());
+            System.out.print(printMessage9());
+            input4 = scanner.nextLine().trim();
+        }
+
+        if (input4.equals("c")) {
+            continueTurn();
+        }else {
+            finishTurn();
+        }
     }
 
     private void finishTurn() {
 
     }
 
-    private void updateValidOptions() {
-        for (Integer choice : currentDiceKept) {
-            for (Integer value : currentThrow) {
-                if (!value.equals(choice)) {
-                    currentValidOptions.add(value);
-                }
-            }
-        }
-    }
 
     private void updateDiceKept(String input) {
         currentDiceKept.add(Integer.parseInt(input));
@@ -227,8 +233,11 @@ public class Coordinator {
 
     private StringBuilder printCurrentValidOptions() {
         StringBuilder temp = new StringBuilder();
+        Set<Integer> options = new HashSet<>(currentThrow);
+        options.removeAll(currentDiceKept);
+
         temp.append("You can now select one of the following: ");
-        for (Integer value : currentValidOptions) {
+        for (Integer value : options) {
             temp.append("[ ");
             temp.append(value);
             temp.append(" ] ");
@@ -299,10 +308,10 @@ public class Coordinator {
         return temp;
     }
 
-    private StringBuilder printMessage8(String input) {
+    private StringBuilder printMessage8(String input, Player player) {
         StringBuilder temp = new StringBuilder();
         temp.append("You have kept ");
-        temp.append(input);
+        temp.append(8 - player.getDiceLeft());
         temp.append(" dice so far.");
         return temp;
     }
