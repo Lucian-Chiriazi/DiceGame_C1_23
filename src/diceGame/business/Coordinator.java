@@ -148,7 +148,7 @@ public class Coordinator {
     }
 
     private void finishTurn() {
-
+        System.out.println(printMessage14());
     }
 
 
@@ -349,6 +349,16 @@ public class Coordinator {
     private StringBuilder printMessage13() {
         StringBuilder temp = new StringBuilder();
         temp.append("You must now select a different die value.");
+
+        return temp;
+    }
+
+    private StringBuilder printMessage14() {
+        StringBuilder temp = new StringBuilder();
+        temp.append("Final score for that turn for ");
+        temp.append(players.get(currentPlayer).getPlayerName());
+        temp.append(" = ");
+        temp.append(currentScore);
 
         return temp;
     }
