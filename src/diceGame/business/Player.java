@@ -43,4 +43,8 @@ public class Player {
         }
         return temp;
     }
+
+    public void resetVariables() {
+        this.diceLeft = 8;
+    }
 }

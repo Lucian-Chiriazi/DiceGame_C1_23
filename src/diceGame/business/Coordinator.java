@@ -32,14 +32,15 @@ public class Coordinator {
         while (round < 3) {
             startRound();
             System.out.println(printScoreboard());
-            resetVariables();
             round++;
         }
     }
 
     private void startRound() {
+        currentPlayer = 0;
         for (int i = 0; i < 3; i++) {
             playTurn();
+            resetVariables();
             currentPlayer++;
         }
     }
@@ -77,38 +78,39 @@ public class Coordinator {
     }
 
     private void continueTurn() {
-        System.out.println(printMessage10());
-        System.out.println(printMessage11());
-        System.out.print(printMessage12());
-        String input = scanner.nextLine().trim();
-
-        while (!validator.validation7(input)) {
-            System.out.println(printInvalid1());
+        if (players.get(currentPlayer).getDiceLeft() > 0) {
+            System.out.println(printMessage10());
+            System.out.println(printMessage11());
             System.out.print(printMessage12());
-            input = scanner.nextLine().trim();
-        }
+            String input = scanner.nextLine().trim();
 
-        generateAndPrintThrow();
+            while (!validator.validation7(input)) {
+                System.out.println(printInvalid1());
+                System.out.print(printMessage12());
+                input = scanner.nextLine().trim();
+            }
 
-        System.out.println();
-        System.out.println(printCurrentDiceKept());
-        System.out.println(printMessage13());
+            generateAndPrintThrow();
 
-        System.out.println(printCurrentValidOptions());
-        System.out.print(printMessage3());
-        String input2 = scanner.nextLine().trim();
+            System.out.println();
+            System.out.println(printCurrentDiceKept());
+            System.out.println(printMessage13());
 
-        while(!validator.validation3(input2, currentThrow, currentDiceKept)) {
-            System.out.println(printInvalid1());
+            System.out.println(printCurrentValidOptions());
             System.out.print(printMessage3());
-            input2 = scanner.nextLine().trim();
+            String input2 = scanner.nextLine().trim();
+
+            while (!validator.validation3(input2, currentThrow, currentDiceKept)) {
+                System.out.println(printInvalid1());
+                System.out.print(printMessage3());
+                input2 = scanner.nextLine().trim();
+            }
+
+            updateDiceKept(input2);
+
+            processChoice(input2);
+
         }
-
-        updateDiceKept(input2);
-
-        processChoice(input2);
-
-
     }
 
 
@@ -149,8 +151,8 @@ public class Coordinator {
 
     private void finishTurn() {
         System.out.println(printMessage14());
+        players.get(currentPlayer).setPlayerScore(currentScore, round);
     }
-
 
     private void updateDiceKept(String input) {
         currentDiceKept.add(Integer.parseInt(input));
@@ -213,7 +215,7 @@ public class Coordinator {
     }
 
     private void resetVariables() {
-        this.currentPlayer = 0;
+        players.get(currentPlayer).resetVariables();
         this.currentScore = 0;
         this.currentThrow = new ArrayList<>();
         this.currentDiceKept = new ArrayList<>();
