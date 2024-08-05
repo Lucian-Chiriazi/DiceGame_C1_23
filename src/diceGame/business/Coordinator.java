@@ -15,6 +15,7 @@ public class Coordinator {
     private int currentScore;
     private ArrayList<Integer> currentThrow;
     private ArrayList<Integer> currentDiceKept;
+    private Set<Integer> validOptions;
 
     public Coordinator() {
         this.dao = new DAOImplementation();
@@ -26,6 +27,7 @@ public class Coordinator {
         this.round = 0;
         this.currentThrow = new ArrayList<>();
         this.currentDiceKept = new ArrayList<>();
+        this.validOptions = new HashSet<>();
     }
 
     public void startGame () {
@@ -78,20 +80,22 @@ public class Coordinator {
     }
 
     private void continueTurn() {
-        if (players.get(currentPlayer).getDiceLeft() > 0) {
-            System.out.println(printMessage10());
-            System.out.println(printMessage11());
-            System.out.print(printMessage12());
-            String input = scanner.nextLine().trim();
+        System.out.println(printMessage10());
+        System.out.println(printMessage11());
+        System.out.print(printMessage12());
+        String input = scanner.nextLine().trim();
 
-            while (!validator.validation7(input)) {
+        while (!validator.validation7(input)) {
                 System.out.println(printInvalid1());
                 System.out.print(printMessage12());
                 input = scanner.nextLine().trim();
             }
 
-            generateAndPrintThrow();
+        generateAndPrintThrow();
+        validOptions = new HashSet<>(currentThrow);
+        validOptions.removeAll(currentDiceKept);
 
+        if (!validOptions.isEmpty()) {
             System.out.println();
             System.out.println(printCurrentDiceKept());
             System.out.println(printMessage13());
@@ -101,18 +105,20 @@ public class Coordinator {
             String input2 = scanner.nextLine().trim();
 
             while (!validator.validation3(input2, currentThrow, currentDiceKept)) {
-                System.out.println(printInvalid1());
-                System.out.print(printMessage3());
-                input2 = scanner.nextLine().trim();
+                    System.out.println(printInvalid1());
+                    System.out.print(printMessage3());
+                    input2 = scanner.nextLine().trim();
             }
 
             updateDiceKept(input2);
 
             processChoice(input2);
 
+        }else {
+            bustTurn();
         }
-    }
 
+    }
 
     private void processChoice(String input) {
         int occurrences = countOccurrences(input, currentThrow);
@@ -133,25 +139,37 @@ public class Coordinator {
         players.get(currentPlayer).setDiceLeft(Integer.parseInt(input3));
         System.out.println(printMessage8(input3, players.get(currentPlayer)));
 
-        System.out.print(printMessage9());
-        String input4 = scanner.nextLine().trim();
-
-        while(!validator.validation6(input4)) {
-            System.out.println(printInvalid1());
+        if (players.get(currentPlayer).getDiceLeft() > 0) {
             System.out.print(printMessage9());
-            input4 = scanner.nextLine().trim();
-        }
+            String input4 = scanner.nextLine().trim();
 
-        if (input4.equals("c")) {
-            continueTurn();
+
+            while (!validator.validation6(input4)) {
+                System.out.println(printInvalid1());
+                System.out.print(printMessage9());
+                input4 = scanner.nextLine().trim();
+            }
+
+            if (input4.equals("c")) {
+                continueTurn();
+            } else {
+                finishTurn();
+            }
         }else {
             finishTurn();
         }
     }
 
+    private void bustTurn() {
+        currentScore = 0;
+        System.out.println(printMessage15());
+        System.out.println(printMessage14());
+        updatePlayerScores();
+    }
+
     private void finishTurn() {
         System.out.println(printMessage14());
-        players.get(currentPlayer).setPlayerScore(currentScore, round);
+        updatePlayerScores();
     }
 
     private void updateDiceKept(String input) {
@@ -171,6 +189,10 @@ public class Coordinator {
 
     private void updateCurrentScore(String choice, String multiplier) {
         this.currentScore += Integer.parseInt(multiplier) * Integer.parseInt(choice);
+    }
+
+    private void updatePlayerScores() {
+        players.get(currentPlayer).setPlayerScore(currentScore, round);
     }
 
     private ArrayList<Integer> generateThrow(Player player) {
@@ -235,11 +257,9 @@ public class Coordinator {
 
     private StringBuilder printCurrentValidOptions() {
         StringBuilder temp = new StringBuilder();
-        Set<Integer> options = new HashSet<>(currentThrow);
-        options.removeAll(currentDiceKept);
 
         temp.append("You can now select one of the following: ");
-        for (Integer value : options) {
+        for (Integer value : validOptions) {
             temp.append("[ ");
             temp.append(value);
             temp.append(" ] ");
@@ -361,6 +381,15 @@ public class Coordinator {
         temp.append(players.get(currentPlayer).getPlayerName());
         temp.append(" = ");
         temp.append(currentScore);
+
+        return temp;
+    }
+
+    private StringBuilder printMessage15() {
+        StringBuilder temp = new StringBuilder();
+        System.out.println();
+        temp.append("Sorry, you have busted with that throw.\n");
+        temp.append("This ends your turn with no score");
 
         return temp;
     }

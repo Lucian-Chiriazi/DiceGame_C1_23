@@ -42,8 +42,8 @@ public class Validation {
     public boolean validation5(String input, int occurrences) {
         String regex = "\\d$";
         Pattern pattern = Pattern.compile(regex);
-        int temp = Integer.parseInt(input);
         if (pattern.matcher(input).matches()) {
+            int temp = Integer.parseInt(input);
             if (temp <= occurrences && temp != 0) {
                 return true;
             }
